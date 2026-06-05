@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+<<!DOCTYPE html>
 <html lang="en">
 <head>
 <meta charset="UTF-8" />
@@ -8,7 +8,7 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
 <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=DM+Mono:wght@300;400;500&display=swap" rel="stylesheet" />
 <style>
- c:root{
+  :root{
     --bg:#040406;
     --amber:#ffb56b;
     --amber-dim:#7a5535;
@@ -56,15 +56,23 @@
   }
   .subtitle .div{color:var(--amber-dim);margin:0 8px;}
 
-  .botlet{bottom:clamp(18px,3.4vw,40px);left:clamp(18px,3.4vw,40px0);}
+  .botleft{bottom:clamp(18px,3.4vw,40px);left:clamp(18px,3.4vw,40px);}
   .readout{font-size:11px;letter-spacing:1.5px;color:var(--ink-dim);line-height:1.9;}
   .readout b{color:var(--amber);font-weight:500;}
   .readout .k{display:inline-block;width:84px;color:var(--ink-dim);}
 
-   .controls{
+  .controls{
     position:fixed;z-index:10;bottom:clamp(18px,3.4vw,40px);
     right:clamp(18px,3.4vw,40px);
     display:flex;flex-direction:column;gap:9px;align-items:flex-end;
+  }
+  .chip{
+    pointer-events:auto;cursor:pointer;user-select:none;
+    font-family:"DM Mono",monospace;font-size:11px;letter-spacing:1.5px;
+    text-transform:uppercase;color:var(--ink-dim);
+    padding:8px 15px;border:1px solid var(--line);border-radius:2px;
+    background:rgba(10,8,6,.35);backdrop-filter:blur(6px);
+    transition:all .25s ease;display:flex;align-items:center;gap:9px;
   }
   .chip:hover{color:var(--ink);border-color:rgba(255,181,107,.4);}
   .chip .dot{
@@ -92,4 +100,42 @@
     .readout{font-size:10px;line-height:1.8;}
     .readout .k{width:70px;}
   }
+</style>
+</head>
+<body>
+  <canvas id="gl"></canvas>
+
+  <div class="overlay vignette"></div>
+  <div class="overlay grain"></div>
+
+  <div class="hud topleft">
+    <div class="title">Schwarzschild<span class="glow">.</span></div>
+    <div class="subtitle">Black Hole Renderer <span class="div">/</span> Ray-Marched Lensing</div>
+  </div>
+
+  <div class="hud botleft">
+    <div class="readout">
+      <div><span class="k">r_horizon</span> <b>1.00 r<sub>s</sub></b></div>
+      <div><span class="k">camera_r</span> <b id="r-cam">—</b></div>
+      <div><span class="k">photons</span> <b id="r-steps">180 / ray</b></div>
+      <div><span class="k">quality</span> <b id="r-qual">MEDIUM</b></div>
+      <div><span class="k">lensing</span> <b id="r-lens">on</b></div>
+    </div>
+  </div>
+
+  <div class="controls">
+    <div class="chip on" id="t-lens"><span class="dot"></span>Gravitational Lensing</div>
+    <div class="chip on" id="t-disk"><span class="dot"></span>Accretion Disk</div>
+    <div class="chip" id="t-qual">Quality <b id="t-qual-label">MEDIUM</b></div>
+    <div class="hint">drag to orbit &nbsp;·&nbsp; scroll to zoom</div>
+  </div>
+
+  <div class="err" id="err">
+    WebGL could not start on this device.<br />Try a different browser or enable hardware acceleration.
+  </div>
+
+  <script type="module" src="/src/main.ts"></script>
+</body>
+</html>
+
   
