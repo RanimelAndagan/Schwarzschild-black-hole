@@ -303,8 +303,6 @@ together.
 
 [![Watch the demo](https://img.youtube.com/vi/zzFkdEEZicg/maxresdefault.jpg)](https://youtu.be/zzFkdEEZicg)
 
-[**▶ WATCH ON YOUTUBE**](https://youtu.be/zzFkdEEZicg)
-
 </div>
 
 ```
