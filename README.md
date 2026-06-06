@@ -81,6 +81,29 @@ rebuildable. `npm install` recreates it from `package.json` and
 
 ---
 
+## // PHENOMENA ON SCREEN
+
+None of these are textures or fakes. They emerge from tracing photons through
+curved spacetime — turn the math on and they appear, turn it off and they vanish.
+
+| Phenomenon | What you see | Why it happens |
+|---|---|---|
+| **Event horizon (shadow)** | The pure-black central disk | Photons that cross `r_s = 2M` can never come back out |
+| **Photon sphere** | The thin bright rim hugging the shadow | At `3M`, light can orbit the hole; rays graze it and barely escape |
+| **Gravitational lensing** | The whole background warps and bends around the hole | Mass curves spacetime, so light follows curved paths (the `3Mu²` term) |
+| **Einstein ring** | A bright ring of smeared, duplicated background stars | A source directly behind the hole is lensed into a full circle |
+| **Secondary image** | The far side of the accretion disk wrapped *over the top* of the hole | Light from behind is bent up and over toward your eye |
+| **Relativistic beaming** | One side of the disk blazes far brighter than the other | Disk gas moving toward you is Doppler-boosted by `g⁴` |
+| **Gravitational redshift** | The disk dims and reddens near the horizon | Light loses energy climbing out of the gravity well (`√(1 − r_s/r)`) |
+| **Accretion-disk thermal gradient** | Hot blue-white inner ring cooling to amber then deep red outward | Thin-disk thermodynamics: `T(r) ∝ [(R_in/r)³(1 − √(R_in/r))]^¼` |
+| **ISCO inner edge** | The disk stops cleanly at `6M`, not at the horizon | Below the innermost stable circular orbit, no stable orbits exist |
+
+> Toggle **GRAV_LENSING** off to watch the Einstein ring and the wrapped disk
+> snap back to a flat, ordinary scene — the cleanest way to *see* general
+> relativity doing its work.
+
+---
+
 ## // THE PHYSICS
 
 Everything below is real and lives in the fragment shader. Units are geometric
@@ -271,6 +294,26 @@ wrote this README, broke the project many times, and learned how all of it fits
 together.
 
 Built at midnight, mostly. Worth it.
+
+---
+
+## // DEMO
+
+<div align="center">
+
+<!--
+  TO ADD THE VIDEO:
+  Open this README on github.com → click the pencil (Edit) → drag your
+  .mp4 / .mov / .webm file into the editor. GitHub uploads it and inserts a
+  https://github.com/user-attachments/assets/... link that auto-embeds as a
+  player. Paste that link in place of the line below, then commit.
+-->
+
+https://github.com/user-attachments/assets/REPLACE-WITH-UPLOADED-VIDEO
+
+*▲ Real-time capture — orbiting the hole, the Einstein ring, and the beamed disk.*
+
+</div>
 
 ```
 ==============================================================================
