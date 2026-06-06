@@ -4,8 +4,7 @@
 
 ### BLACK HOLE RENDERER · RAY-MARCHED GRAVITATIONAL LENSING
 
-*A real-time, physically-correct Schwarzschild black hole —*
-*one photon per pixel, traced backward through curved spacetime on the GPU.*
+*A real-time, mathematically correct Schwarzschild black hole*
 
 <br/>
 
