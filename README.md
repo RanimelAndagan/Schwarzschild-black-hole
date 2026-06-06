@@ -206,26 +206,6 @@ WebGL plus shaders. Same idea, same shader language (GLSL), different doorway. T
 real divide was never C++ vs TypeScript. It was always CPU vs GPU. A C++ black hole
 on the CPU would be just as slow.
 
-### The build chain
-
-```
-npm run dev  ->  Vite  ->  index.html  ->  /src/main.ts  ->  imports gl, camera, shaders
-```
-
-`package.json` scripts launch Vite. Vite uses `index.html` as the front door.
-`index.html` loads `main.ts`. `main.ts` imports everything else, including the
-shaders as raw strings (`?raw`). The config files exist to keep every link in that
-chain legal. The browser cannot run TypeScript directly, so for a public page the
-project must be built first (`npm run build`).
-
-### You do not commit node_modules
-
-`npm init` makes `package.json`. `npm install` generates `package-lock.json` and
-the giant `node_modules` folder. Two requested packages exploded into dozens of
-folders, because they pull in their own dependencies. None of it goes in the repo,
-because `package.json` plus `package-lock.json` is enough to rebuild it exactly.
-`.gitignore` is what tells git to skip it.
-
 ---
 
 ## // CREDITS
