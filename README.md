@@ -301,15 +301,9 @@ Built at midnight, mostly. Worth it.
 
 <div align="center">
 
-<!--
-  TO ADD THE VIDEO:
-  Open this README on github.com → click the pencil (Edit) → drag your
-  .mp4 / .mov / .webm file into the editor. GitHub uploads it and inserts a
-  https://github.com/user-attachments/assets/... link that auto-embeds as a
-  player. Paste that link in place of the line below, then commit.
--->
+[![Watch the demo](https://img.youtube.com/vi/zzFkdEEZicg/maxresdefault.jpg)](https://youtu.be/zzFkdEEZicg)
 
-https://github.com/user-attachments/assets/REPLACE-WITH-UPLOADED-VIDEO
+[**▶ WATCH ON YOUTUBE**](https://youtu.be/zzFkdEEZicg)
 
 *▲ Real-time capture — orbiting the hole, the Einstein ring, and the beamed disk.*
 
