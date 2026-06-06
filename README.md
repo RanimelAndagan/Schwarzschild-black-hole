@@ -293,7 +293,7 @@ done by the contributors above (with Claude Code handling the actual edits). We
 wrote this README, broke the project many times, and learned how all of it fits
 together.
 
-Built at midnight, mostly. Worth it.
+ Worth it.
 
 ---
 
@@ -304,8 +304,6 @@ Built at midnight, mostly. Worth it.
 [![Watch the demo](https://img.youtube.com/vi/zzFkdEEZicg/maxresdefault.jpg)](https://youtu.be/zzFkdEEZicg)
 
 [**▶ WATCH ON YOUTUBE**](https://youtu.be/zzFkdEEZicg)
-
-*▲ Real-time capture — orbiting the hole, the Einstein ring, and the beamed disk.*
 
 </div>
 
