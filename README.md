@@ -12,12 +12,6 @@
 
 <br/>
 
-![Renderer](https://img.shields.io/badge/RENDERER-WebGL_1.0-e8e8e8?style=flat-square&labelColor=0d0d0d&color=2a2a2a)
-![Physics](https://img.shields.io/badge/PHYSICS-GLSL_shader-e8e8e8?style=flat-square&labelColor=0d0d0d&color=2a2a2a)
-![Build](https://img.shields.io/badge/BUILD-Vite-e8e8e8?style=flat-square&labelColor=0d0d0d&color=2a2a2a)
-![Mode](https://img.shields.io/badge/MODE-real--time_60fps-e8e8e8?style=flat-square&labelColor=0d0d0d&color=2a2a2a)
-![License](https://img.shields.io/badge/LICENSE-ISC-e8e8e8?style=flat-square&labelColor=0d0d0d&color=2a2a2a)
-
 ```
 DRAG TO ORBIT   ::   SCROLL TO ZOOM   ::   TOGGLE LENSING / DISK / QUALITY
 ```
