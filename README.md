@@ -1,24 +1,37 @@
+<div align="center">
+
+# `▓▒░ [ SCHWARZSCHILD ] ░▒▓`
+
+### BLACK HOLE RENDERER · RAY-MARCHED GRAVITATIONAL LENSING
+
+*A real-time, physically-correct Schwarzschild black hole —*
+*one photon per pixel, traced backward through curved spacetime on the GPU.*
+
+<br/>
+
+[![My Skills](https://skillicons.dev/icons?i=ts,html,css,vite,nodejs,git,github&theme=dark)](https://skillicons.dev)
+
+<br/>
+
+![Renderer](https://img.shields.io/badge/RENDERER-WebGL_1.0-e8e8e8?style=flat-square&labelColor=0d0d0d&color=2a2a2a)
+![Physics](https://img.shields.io/badge/PHYSICS-GLSL_shader-e8e8e8?style=flat-square&labelColor=0d0d0d&color=2a2a2a)
+![Build](https://img.shields.io/badge/BUILD-Vite-e8e8e8?style=flat-square&labelColor=0d0d0d&color=2a2a2a)
+![Mode](https://img.shields.io/badge/MODE-real--time_60fps-e8e8e8?style=flat-square&labelColor=0d0d0d&color=2a2a2a)
+![License](https://img.shields.io/badge/LICENSE-ISC-e8e8e8?style=flat-square&labelColor=0d0d0d&color=2a2a2a)
+
 ```
-==============================================================================
-
-   [ SCHWARZSCHILD ]
-   BLACK HOLE RENDERER  ::  RAY-MARCHED LENSING
-
-   a real-time, physically-correct Schwarzschild black hole,
-   rendered one photon per pixel on the GPU.
-
-==============================================================================
+DRAG TO ORBIT   ::   SCROLL TO ZOOM   ::   TOGGLE LENSING / DISK / QUALITY
 ```
+
+</div>
+
+---
 
 > A non-rotating (Schwarzschild) black hole rendered in the browser. Every pixel
 > fires a photon that is traced backward through curved spacetime using the real
 > general-relativity light-bending equation. The glowing accretion disk, the
 > Einstein ring, and the lopsided brightness are not painted on. They fall out
 > of the physics.
-
-```
-DRAG TO ORBIT   ::   SCROLL TO ZOOM   ::   TOGGLE LENSING / DISK / QUALITY
-```
 
 ---
 
