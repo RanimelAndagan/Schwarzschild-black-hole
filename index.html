@@ -6,15 +6,19 @@
 <title>Schwarzschild — Black Hole Renderer</title>
 <link rel="preconnect" href="https://fonts.googleapis.com" />
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-<link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=DM+Mono:wght@300;400;500&display=swap" rel="stylesheet" />
+<link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@300;400;500&display=swap" rel="stylesheet" />
 <style>
   :root{
     --bg:#040406;
-    --amber:#ffb56b;
-    --amber-dim:#7a5535;
-    --ink:#e9e4dd;
-    --ink-dim:#6f6a64;
-    --line:rgba(255,181,107,.18);
+    /* monochrome instrument palette — white/grey at varying opacity */
+    --ink:#e8e8e8;          /* bright readout / active */
+    --ink-hi:#ffffff;       /* peak white (glow accents) */
+    --ink-mid:rgba(232,232,232,.62);
+    --ink-dim:rgba(232,232,232,.38);
+    --ink-faint:rgba(232,232,232,.22);
+    --line:rgba(232,232,232,.16);
+    --line-hi:rgba(232,232,232,.42);
+    --glow:rgba(255,255,255,.55);
   }
   *{margin:0;padding:0;box-sizing:border-box;}
   html,body{height:100%;background:var(--bg);overflow:hidden;}
@@ -28,77 +32,129 @@
   body.dragging{cursor:grabbing;}
   #gl{position:fixed;inset:0;width:100%;height:100%;display:block;}
 
-  /* film grain + vignette overlay */
-  .overlay{position:fixed;inset:0;pointer-events:none;z-index:5;}
+  /* overlays: vignette + scanlines + grain */
+  .overlay{position:fixed;inset:0;pointer-events:none;}
   .vignette{
-    background:radial-gradient(120% 120% at 50% 50%, transparent 55%, rgba(0,0,0,.65) 100%);
+    z-index:4;
+    background:radial-gradient(120% 120% at 50% 50%, transparent 55%, rgba(0,0,0,.7) 100%);
+  }
+  .scanlines{
+    z-index:6;opacity:.5;mix-blend-mode:overlay;
+    background:repeating-linear-gradient(
+      to bottom,
+      rgba(255,255,255,.045) 0px,
+      rgba(255,255,255,.045) 1px,
+      transparent 1px,
+      transparent 3px
+    );
   }
   .grain{
-    opacity:.05;mix-blend-mode:overlay;
+    z-index:5;opacity:.04;mix-blend-mode:overlay;
     background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='120'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='3'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
   }
 
   /* HUD */
   .hud{position:fixed;z-index:10;pointer-events:none;}
   .topleft{top:clamp(18px,3.4vw,40px);left:clamp(18px,3.4vw,40px);}
+
+  /* terminal banner title */
   .title{
-    font-family:"Instrument Serif",serif;
-    font-style:italic;
-    font-size:clamp(34px,5.4vw,68px);
-    line-height:.92;
-    letter-spacing:.5px;
+    font-family:"DM Mono",monospace;font-weight:500;
+    font-size:clamp(20px,3.4vw,40px);
+    line-height:1;
+    letter-spacing:clamp(3px,1vw,10px);
+    text-transform:uppercase;
     color:var(--ink);
+    text-shadow:0 0 22px var(--glow);
+    display:flex;align-items:center;
   }
-  .title .glow{color:var(--amber);text-shadow:0 0 26px rgba(255,150,70,.55);}
+  .title .br{color:var(--ink-dim);text-shadow:none;}
+  .title .name{margin:0 .55em;}
+  .cursor{
+    display:inline-block;width:.62em;height:1em;margin-left:.18em;
+    background:var(--ink);box-shadow:0 0 14px var(--glow);
+    animation:blink 1.05s steps(1) infinite;
+  }
+  @keyframes blink{0%,49%{opacity:1;}50%,100%{opacity:0;}}
   .subtitle{
-    margin-top:10px;font-size:11px;letter-spacing:3.5px;text-transform:uppercase;
-    color:var(--ink-dim);font-weight:300;
+    margin-top:12px;font-size:11px;letter-spacing:3px;text-transform:uppercase;
+    color:var(--ink-mid);font-weight:300;
   }
-  .subtitle .div{color:var(--amber-dim);margin:0 8px;}
+  .subtitle .div{color:var(--ink-faint);margin:0 9px;}
 
+  /* bottom-left status dump */
   .botleft{bottom:clamp(18px,3.4vw,40px);left:clamp(18px,3.4vw,40px);}
-  .readout{font-size:11px;letter-spacing:1.5px;color:var(--ink-dim);line-height:1.9;}
-  .readout b{color:var(--amber);font-weight:500;}
-  .readout .k{display:inline-block;width:84px;color:var(--ink-dim);}
+  .panel{
+    position:relative;padding:14px 16px;
+    border:1px solid var(--line);background:rgba(8,8,10,.32);
+    backdrop-filter:blur(4px);
+  }
+  /* corner ticks */
+  .panel::before,.panel::after{
+    content:"";position:absolute;width:9px;height:9px;
+    border-color:var(--line-hi);border-style:solid;
+  }
+  .panel::before{top:-1px;left:-1px;border-width:1px 0 0 1px;}
+  .panel::after{bottom:-1px;right:-1px;border-width:0 1px 1px 0;}
 
+  .panel-hd{
+    font-size:9.5px;letter-spacing:3px;text-transform:uppercase;
+    color:var(--ink-dim);margin-bottom:9px;
+  }
+  .readout{font-size:11px;letter-spacing:1.2px;color:var(--ink-mid);line-height:1.85;}
+  .readout .row{display:flex;align-items:baseline;white-space:nowrap;}
+  .readout .row::before{content:">";color:var(--ink-faint);margin-right:8px;}
+  .readout .k{display:inline-block;width:88px;color:var(--ink-dim);text-transform:uppercase;}
+  .readout b{color:var(--ink);font-weight:500;}
+
+  /* bottom-right terminal toggles */
   .controls{
     position:fixed;z-index:10;bottom:clamp(18px,3.4vw,40px);
     right:clamp(18px,3.4vw,40px);
-    display:flex;flex-direction:column;gap:9px;align-items:flex-end;
+    display:flex;flex-direction:column;gap:8px;align-items:flex-end;
   }
   .chip{
     pointer-events:auto;cursor:pointer;user-select:none;
     font-family:"DM Mono",monospace;font-size:11px;letter-spacing:1.5px;
     text-transform:uppercase;color:var(--ink-dim);
-    padding:8px 15px;border:1px solid var(--line);border-radius:2px;
-    background:rgba(10,8,6,.35);backdrop-filter:blur(6px);
-    transition:all .25s ease;display:flex;align-items:center;gap:9px;
+    padding:8px 13px;border:1px solid var(--line);border-radius:0;
+    background:rgba(8,8,10,.32);backdrop-filter:blur(4px);
+    transition:color .2s ease,border-color .2s ease,box-shadow .2s ease;
+    display:flex;align-items:center;gap:12px;min-width:188px;
+    justify-content:space-between;
   }
-  .chip:hover{color:var(--ink);border-color:rgba(255,181,107,.4);}
-  .chip .dot{
-    width:6px;height:6px;border-radius:50%;background:var(--ink-dim);
-    transition:all .25s ease;
-  }
-  .chip.on{color:var(--amber);border-color:rgba(255,181,107,.45);}
-  .chip.on .dot{background:var(--amber);box-shadow:0 0 10px var(--amber);}
-  .chip b{color:var(--amber);font-weight:500;}
+  .chip:hover{color:var(--ink-mid);border-color:var(--line-hi);}
+  /* CSS-driven bracket state — main.ts only toggles the `on` class */
+  .chip .state{font-weight:500;letter-spacing:1px;color:var(--ink-dim);}
+  .chip .state::after{content:"[ OFF ]";}
+  .chip.on{color:var(--ink);border-color:var(--line-hi);box-shadow:0 0 16px rgba(255,255,255,.07);}
+  .chip.on .state{color:var(--ink-hi);text-shadow:0 0 12px var(--glow);}
+  .chip.on .state::after{content:"[ ON ]";}
+  /* quality chip uses a JS-updated label instead of on/off */
+  .chip .qval{font-weight:500;color:var(--ink);letter-spacing:1px;}
+  .chip .qval::before{content:"[ ";color:var(--ink-dim);}
+  .chip .qval::after{content:" ]";color:var(--ink-dim);}
 
   .hint{
-    margin-top:6px;font-size:10px;letter-spacing:1.5px;color:var(--ink-dim);
-    opacity:.7;text-align:right;text-transform:uppercase;
+    margin-top:7px;font-size:10px;letter-spacing:2px;color:var(--ink-dim);
+    opacity:.8;text-align:right;text-transform:uppercase;
   }
+  .hint .div{color:var(--ink-faint);margin:0 4px;}
 
   .err{
     position:fixed;inset:0;display:none;z-index:30;
     align-items:center;justify-content:center;text-align:center;
-    padding:40px;color:var(--ink-dim);font-size:13px;line-height:1.8;
+    padding:40px;color:var(--ink-mid);font-size:13px;line-height:1.8;
+    letter-spacing:1px;text-transform:uppercase;background:rgba(4,4,6,.85);
   }
   @media (max-width:560px){
-    .subtitle{font-size:9px;letter-spacing:2px;}
-    .controls{bottom:14px;right:14px;gap:7px;}
-    .chip{font-size:10px;padding:6px 11px;}
-    .readout{font-size:10px;line-height:1.8;}
-    .readout .k{width:70px;}
+    .title{letter-spacing:3px;}
+    .subtitle{font-size:9px;letter-spacing:2px;margin-top:9px;}
+    .panel{padding:11px 13px;}
+    .controls{bottom:14px;right:14px;gap:6px;}
+    .chip{font-size:10px;padding:7px 11px;min-width:0;gap:9px;}
+    .readout{font-size:10px;line-height:1.75;}
+    .readout .k{width:72px;}
   }
 </style>
 </head>
@@ -107,27 +163,31 @@
 
   <div class="overlay vignette"></div>
   <div class="overlay grain"></div>
+  <div class="overlay scanlines"></div>
 
   <div class="hud topleft">
-    <div class="title">Schwarzschild<span class="glow">.</span></div>
-    <div class="subtitle">Black Hole Renderer <span class="div">/</span> Ray-Marched Lensing</div>
+    <div class="title"><span class="br">[</span><span class="name">Schwarzschild</span><span class="br">]</span><span class="cursor"></span></div>
+    <div class="subtitle">Black Hole Renderer <span class="div">::</span> Ray-Marched Lensing</div>
   </div>
 
   <div class="hud botleft">
-    <div class="readout">
-      <div><span class="k">r_horizon</span> <b>1.00 r<sub>s</sub></b></div>
-      <div><span class="k">camera_r</span> <b id="r-cam">—</b></div>
-      <div><span class="k">photons</span> <b id="r-steps">180 / ray</b></div>
-      <div><span class="k">quality</span> <b id="r-qual">MEDIUM</b></div>
-      <div><span class="k">lensing</span> <b id="r-lens">on</b></div>
+    <div class="panel">
+      <div class="panel-hd">// telemetry</div>
+      <div class="readout">
+        <div class="row"><span class="k">r_horizon</span> <b>1.00 r<sub>s</sub></b></div>
+        <div class="row"><span class="k">camera_r</span> <b id="r-cam">—</b></div>
+        <div class="row"><span class="k">photons</span> <b id="r-steps">180 / ray</b></div>
+        <div class="row"><span class="k">quality</span> <b id="r-qual">MEDIUM</b></div>
+        <div class="row"><span class="k">lensing</span> <b id="r-lens">on</b></div>
+      </div>
     </div>
   </div>
 
   <div class="controls">
-    <div class="chip on" id="t-lens"><span class="dot"></span>Gravitational Lensing</div>
-    <div class="chip on" id="t-disk"><span class="dot"></span>Accretion Disk</div>
-    <div class="chip" id="t-qual">Quality <b id="t-qual-label">MEDIUM</b></div>
-    <div class="hint">drag to orbit &nbsp;·&nbsp; scroll to zoom</div>
+    <div class="chip on" id="t-lens"><span class="lbl">Grav_Lensing</span><span class="state"></span></div>
+    <div class="chip on" id="t-disk"><span class="lbl">Accretion_Disk</span><span class="state"></span></div>
+    <div class="chip" id="t-qual"><span class="lbl">Quality</span><span class="qval" id="t-qual-label">MEDIUM</span></div>
+    <div class="hint">Drag to orbit <span class="div">·</span> Scroll to zoom</div>
   </div>
 
   <div class="err" id="err">
@@ -137,5 +197,3 @@
   <script type="module" src="/src/main.ts"></script>
 </body>
 </html>
-
-  
