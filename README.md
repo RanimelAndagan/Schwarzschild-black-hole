@@ -228,57 +228,6 @@ because `package.json` plus `package-lock.json` is enough to rebuild it exactly.
 
 ---
 
-## // BUGS I FOUGHT
-
-The war stories, because the lessons are worth more than the fixes.
-
-### The error screen that lied
-
-The page showed "WebGL could not start on this device," so I chased browsers,
-hardware acceleration, GPU settings. None of it was the problem. That overlay is a
-generic catch-all. It fires for ANY failure during startup, and the real failure
-was typos in the shader that stopped it from compiling. Lessons:
-
-```
-> GLSL is not checked until the GPU compiles it at runtime.
-  The editor never squiggles it, so typos sail through.
-> GLSL compiles all-or-nothing. One typo blanks the whole screen,
-  same as twelve typos. No partial render to hint you are close.
-> The real error was in the browser console (F12) the entire time.
-  The overlay was just the polite face on top.
-```
-
-It was the cheapest kind of bug (spelling) wearing the scariest costume (a
-hardware error). The physics underneath was correct the whole time.
-
-### The black hole that faded when zooming out
-
-Zooming out slowly dissolved the hole into stars. It was not the distance cap. Each
-photon has a fixed step budget, and from far away the photons ran out of steps
-before they ever reached the hole, so they exited to the background. Fix: cap the
-zoom at a distance the lowest quality tier can still reach.
-
-### The quality button that fought back
-
-The button only worked after several fast clicks. An automatic FPS governor was
-changing the quality every frame and overriding my clicks. Fix: when the user picks
-a quality manually, the governor backs off (same pattern the camera uses to stop
-its idle spin once you grab it).
-
-### The missing /* that broke everything
-
-One file lost the `/*` that opens its top comment block. Without it, a line of equals
-signs looked like a merge conflict marker to the bundler, and nothing built. One
-two-character fix brought it all back.
-
-### Git, the hard way
-
-Pushed to the wrong branch, hit "unrelated histories," committed conflict markers,
-opened Vim by accident, fought "fetch first" rejections. Came out the other side
-actually understanding pull-before-push, branches, collaborators, and tokens.
-
----
-
 ## // CREDITS
 
 **Contributors**
