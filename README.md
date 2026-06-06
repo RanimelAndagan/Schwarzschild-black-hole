@@ -249,7 +249,7 @@ actually understanding pull-before-push, branches, collaborators, and tokens.
 
 - `RanimelAndagan` :: WebGL / GLSL shaders, HTML, TypeScript, project lead, this README :: [profile](https://github.com/RanimelAndagan)
 - `emerjameszk-hue` (Emerson James) :: WebGL / GLSL shaders :: [profile](https://github.com/emerjameszk-hue)
-- `LawrenceSuizo` :: some of the HTML and TypeScript :: [profile](https://github.com/LawrenceSuizo)
+- `LawrenceSuizo` :: HTML and TypeScript :: [profile](https://github.com/LawrenceSuizo)
 
 The physics and the math were worked out with help from an AI assistant (Claude),
 which also guided the debugging and the project decisions. The coding itself was
