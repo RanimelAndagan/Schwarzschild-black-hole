@@ -2,9 +2,7 @@
 
 # `▓▒░ [ SCHWARZSCHILD ] ░▒▓`
 
-### BLACK HOLE RENDERER · RAY-MARCHED GRAVITATIONAL LENSING
-
-*A real-time, mathematically correct Schwarzschild black hole*
+## A real-time, mathematically correct Schwarzschild black hole
 
 <br/>
 
