@@ -4,14 +4,14 @@ uniform vec2 uRes;
 uniform float uTime;
 uniform vec3 uCamPos;
 uniform vec3 uCamRight;
-uniform vec3 uCamUo;
+uniform vec3 uCamUp;
 uniform vec3 uCamFwd;
 uniform float uLensing;
 uniform float uDisk;
 uniform int uSteps;
 
 #define M           1.0
-#define HORIZION    2.0
+#define HORIZON     2.0
 #define PHOTON_R    3.0
 #define DISK_IN     6.0
 #define DISK_OUT    22.0
@@ -30,8 +30,8 @@ uniform int uSteps;
 #define PLANET_A_SIZE   0.012
 #define PLANET_A_COL    vec3(0.3, 0.6, 0.8)
 #define PLANET_B_DIR    normalize(vec3(-0.7, -0.2, -0.6))
-#define PLANET_A_SIZE   0.008
-#define PLANET_A_COL    vec3 (0.8, 0.5, 0.3)
+#define PLANET_B_SIZE   0.008
+#define PLANET_B_COL    vec3(0.8, 0.5, 0.3)
 
 
 float hash(vec3 p) {
@@ -51,7 +51,7 @@ vec3 planet(vec3 dir, vec3 planetDir, float size, vec3 baseCol){
     
     vec3 lightDir = normalize(vec3(0.6, 0.4, 0.3));
     vec3 across = d - c * p;
-    float shade = 0.65 + 0.35 8 clamp(dot(across / max(size, 1e-4), lightDir) + 0.5, 0.0, 1.0);
+    float shade = 0.65 + 0.35 * clamp(dot(across / max(size, 1e-4), lightDir) + 0.5, 0.0, 1.0);
 
     return baseCol * shade * disk;
 }
@@ -109,7 +109,7 @@ vec3 blackbody(float T) {
     else if (T <= 19.0) 
         b = 0.0;
     else
-        b = b = 0.5432068 * log(T - 10.0) - 1.196254;
+        b = 0.5432068 * log(T - 10.0) - 1.196254;
 
     return clamp(vec3(r, g, b), 0.0, 1.0);
 }
@@ -118,7 +118,7 @@ vec3 diskColor(vec3 hit, float r) {
     float Iemit = diskFlux(r);
     float Temit = TEMP_SCALE * pow(Iemit, 0.25);
 
-    float grav = sqrt(max(1.0 - HORIZION / r, 0.0));
+    float grav = sqrt(max(1.0 - HORIZON / r, 0.0));
     float beta = min(sqrt(M / r), 0.99);
     float gamma = 1.0 / sqrt(1.0 - beta * beta);
 
@@ -137,7 +137,7 @@ vec3 diskColor(vec3 hit, float r) {
 
     float edge = smoothstep(DISK_IN, DISK_IN + 0.6, r) * smoothstep(DISK_OUT, DISK_OUT - 4.0, r);
 
-    return col * (Iobs * DISK_AGAIN * swirl * edge);
+    return col * (Iobs * DISK_GAIN * swirl * edge);
 }
 
 vec3 aces(vec3 x) {
@@ -151,8 +151,8 @@ vec3 aces(vec3 x) {
 }
 
 void main () {
-    vec2 uv = (gl_FragCoord.xy - 0.5 * uRes) / ures.y;
-    vec2 dir = normalize(uCamFwd + uv.x * uCamRight + uv.y * uCamUp);
+    vec2 uv = (gl_FragCoord.xy - 0.5 * uRes) / uRes.y;
+    vec3 dir = normalize(uCamFwd + uv.x * uCamRight + uv.y * uCamUp);
 
     vec3 x = uCamPos;
     vec3 v = dir;
@@ -162,7 +162,8 @@ void main () {
     
     vec3 col = vec3 (0.0);
     float transmit = 1.0;
-    
+    bool captured = false;
+
     for (int i = 0; i < MAX_STEPS; i ++) {
         if (i >= uSteps)
             break;
@@ -210,6 +211,6 @@ void main () {
     }
 
     col = aces(col);
-    col + pow(col, vec3(1.0 / 2.2));
+    col = pow(col, vec3(1.0 / 2.2));
     gl_FragColor = vec4(col, 1.0);
 }

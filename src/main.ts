@@ -1,4 +1,4 @@
-=================================================================
+/* =================================================================
    Entry point: canvas + GL setup, the render loop, camera input, HUD wiring,
    and the QUALITY / FPS-governor system.
 
