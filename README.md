@@ -2,7 +2,7 @@
 
 # `▓▒░ [ SCHWARZSCHILD ] ░▒▓`
 
-## A real-time, mathematically correct Schwarzschild black hole
+## A real-time, mathematically correct Schwarzschild black hole!
 
 <br/>
 
