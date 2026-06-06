@@ -84,7 +84,7 @@ rebuildable. `npm install` recreates it from `package.json` and
 ## // PHENOMENA ON SCREEN
 
 None of these are textures or fakes. They emerge from tracing photons through
-curved spacetime — turn the math on and they appear, turn it off and they vanish.
+curved spacetime. Turn the math on and they appear, turn it off and they vanish.
 
 | Phenomenon | What you see | Why it happens |
 |---|---|---|
