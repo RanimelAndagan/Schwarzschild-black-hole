@@ -37,12 +37,6 @@ BUILD      ::  Vite
 SIM RUNS   ::  on the GPU, per pixel, every frame
 ```
 
-The TypeScript never simulates the black hole. It sets up the canvas, reads your
-mouse, manages quality, and feeds numbers into the shader each frame. The actual
-simulation lives in `src/shaders/blackhole.frag.glsl` and runs on the GPU.
-
----
-
 ## // RUN IT
 
 You need Node.js installed. Then:
