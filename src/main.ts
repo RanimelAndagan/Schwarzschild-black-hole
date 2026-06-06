@@ -47,6 +47,7 @@ const rCamEl = document.getElementById("r-cam") as HTMLElement;
 const rStepsEl = document.getElementById("r-steps") as HTMLElement;
 const rQualEl = document.getElementById("r-qual") as HTMLElement;
 const rLensEl = document.getElementById("r-lens") as HTMLElement;
+const tSpin = document.getElementById("t-spin") as HTMLElement;
 const tLens = document.getElementById("t-lens") as HTMLElement;
 const tDisk = document.getElementById("t-disk") as HTMLElement;
 const tQual = document.getElementById("t-qual") as HTMLElement;
@@ -107,6 +108,7 @@ let lastY = 0;
 canvas.addEventListener("pointerdown", (e) => {
   dragging = true;
   cam.autoYaw = false; // user took over; stop the idle spin
+  tSpin.classList.toggle("on", false); // keep the Auto_Orbit chip in sync
   lastX = e.clientX;
   lastY = e.clientY;
   document.body.classList.add("dragging");
@@ -141,6 +143,11 @@ canvas.addEventListener(
 /* ---------------------------------------------------------------------------
    Toggles + quality chip.
    --------------------------------------------------------------------------- */
+tSpin.addEventListener("click", () => {
+  // re-enable the idle orbit on demand; pointerdown turns it back off
+  cam.autoYaw = !cam.autoYaw;
+  tSpin.classList.toggle("on", cam.autoYaw);
+});
 tLens.addEventListener("click", () => {
   lensingOn = !lensingOn;
   tLens.classList.toggle("on", lensingOn);

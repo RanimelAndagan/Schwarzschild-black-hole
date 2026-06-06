@@ -64,6 +64,7 @@ rebuildable. `npm install` recreates it from `package.json` and
 > GRAV_LENSING  toggle the real light bending on / off
 > ACCRETION_DISK   toggle the glowing disk
 > QUALITY       cycle LOW / MEDIUM / HIGH (photon step budget)
+> AUTO_ORBIT    toggle the hands-free idle spin on / off (off the moment you drag)
 ```
 
 ---
