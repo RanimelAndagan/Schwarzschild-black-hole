@@ -204,9 +204,8 @@ on the CPU would be just as slow.
 
 The physics and the math were worked out with help from an AI assistant (Claude),
 which also guided the debugging and the project decisions. The coding itself was
-done by the contributors above (with Claude Code handling the actual edits). We
-wrote this README, broke the project many times, and learned how all of it fits
-together.
+done by the contributors above. We wrote this README, broke the project many times, 
+and learned how all of it fits together.
 
  Worth it.
 
