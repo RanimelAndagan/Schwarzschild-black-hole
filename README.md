@@ -35,7 +35,7 @@ BUILD      ::  Vite
 SIM RUNS   ::  on the GPU, per pixel, every frame
 ```
 
-## // RUN IT
+## // RUN ITT
 
 You need Node.js installed. Then:
 
