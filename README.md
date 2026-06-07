@@ -182,8 +182,7 @@ notes, this is the bigger-picture stuff):
 A black hole render means doing the ray-marching math for every pixel (millions)
 every frame (60 times a second). Only the GPU can do that, because it runs
 thousands of cores in parallel. The CPU works mostly one thing at a time and would
-take seconds or minutes per frame. The language (TypeScript, C++, whatever) is just
-the wrapper. The GPU shader is what makes it fast.
+take seconds or minutes per frame. 
 
 ---
 
