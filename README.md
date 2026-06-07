@@ -185,13 +185,6 @@ thousands of cores in parallel. The CPU works mostly one thing at a time and wou
 take seconds or minutes per frame. The language (TypeScript, C++, whatever) is just
 the wrapper. The GPU shader is what makes it fast.
 
-### WebGL is OpenGL for the browser
-
-Other black hole projects written in C++ use OpenGL plus shaders. This project uses
-WebGL plus shaders. Same idea, same shader language (GLSL), different doorway. The
-real divide was never C++ vs TypeScript. It was always CPU vs GPU. A C++ black hole
-on the CPU would be just as slow.
-
 ---
 
 ## // CREDITS
